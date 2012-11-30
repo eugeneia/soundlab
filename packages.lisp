@@ -18,6 +18,8 @@ files and Gnuplot compatible data files.")
    "Procedures which generate wave forms.")
   (:use :cl)
   (:export :sine
+	   :binary
+	   :sawtooth
 	   :flatline))
 
 (defpackage :soundlab.notes
@@ -58,10 +60,12 @@ files and Gnuplot compatible data files.")
 	   :subtract
 	   :multiply
 	   :divide
+	   :chord
 	   :dampen
 	   :pitch
 	   :pitch*
-	   :repeat))
+	   :repeat
+	   :envelope*))
 
 (defpackage :soundlab-user
   (:documentation
