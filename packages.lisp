@@ -13,15 +13,6 @@ files and Gnuplot compatible data files.")
 	   :sample-function-wave
 	   :export-function-wave))
 
-(defpackage :soundlab.waves
-  (:documentation
-   "Procedures which generate wave forms.")
-  (:use :cl)
-  (:export :sine
-	   :binary
-	   :sawtooth
-	   :flatline))
-
 (defpackage :soundlab.notes
   (:documentation
    "Procedures which implement a simple western note system.")
@@ -31,7 +22,7 @@ files and Gnuplot compatible data files.")
 
 (defpackage :soundlab.tempo
   (:documentation
-   "Dynamic timing variables and procedures to convert tempo units.")
+   "Special timing variables and procedures to convert tempo units.")
   (:use :cl)
   (:export :bpm-quarter-note
 	   :interval-frequency
@@ -43,6 +34,15 @@ files and Gnuplot compatible data files.")
 	   :1/16-note :1/16-note-if
 	   :1/32-note :1/32-note-if))
 
+(defpackage :soundlab.waves
+  (:documentation
+   "Procedures which generate wave forms.")
+  (:use :cl)
+  (:export :sine
+	   :binary
+	   :sawtooth
+	   :flatline))
+
 (defpackage :soundlab.envelope
   (:documentation
    "Envelope implementation.")
@@ -53,7 +53,8 @@ files and Gnuplot compatible data files.")
 
 (defpackage :soundlab.combinators
   (:documentation
-   "I have no idea what I am doing. I thought I knew but boy am I lost.")
+   "I have no idea what I am doing. I thought I knew but boy am I
+  lost. Still, all this appears to be something good!")
   (:use :cl
 	:soundlab.waves)
   (:export :add
@@ -61,11 +62,28 @@ files and Gnuplot compatible data files.")
 	   :multiply
 	   :divide
 	   :chord
+	   :mix
+	   :mix*
 	   :dampen
 	   :pitch
 	   :pitch*
 	   :repeat
 	   :envelope*))
+
+(defpackage soundlab.waves.envelope
+  (:documentation
+   "Wave form from envelope.")
+  (:use :cl
+	:soundlab.tempo
+	:soundlab.combinators)
+  (:export :repeat-envelope
+	   :envelope-wave))
+
+(defpackage soundlab.filters
+  (:documentation
+   "Filters for functions.")
+  (:use :cl)
+  (:export :lowslope))
 
 (defpackage :soundlab-user
   (:documentation
@@ -73,7 +91,9 @@ files and Gnuplot compatible data files.")
   (:use :cl
 	:soundlab.sampling
 	:soundlab.waves
+	:soundlab.waves.envelope
 	:soundlab.notes
 	:soundlab.tempo
 	:soundlab.envelope
-	:soundlab.combinators))
+	:soundlab.combinators
+	:soundlab.filters))

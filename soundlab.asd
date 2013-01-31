@@ -26,6 +26,10 @@
 				   "waves/sine"))
 	       (:file "waves/flatline"
 		      :depends-on ("packages"))
+	       (:file "waves/envelope"
+		      :depends-on ("packages"
+				   "tempo/bpm"
+				   "combinators/repeat"))
 	       (:file "notes/western"
 		      :depends-on ("packages"))
 	       (:file "tempo/bpm"
@@ -40,6 +44,10 @@
 	       (:file "combinators/chord"
 		      :depends-on ("packages"
 				   "combinators/algebra"))
+	       (:file "combinators/mix"
+		      :depends-on ("packages"
+				   "combinators/algebra"
+				   "waves/flatline"))
 	       (:file "combinators/repeat"
 		      :depends-on ("packages"))
 	       (:file "combinators/dampen"
