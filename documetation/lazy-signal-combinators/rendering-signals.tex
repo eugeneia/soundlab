@@ -1,0 +1,32 @@
+Before discussing signal synthesis, we must define ways for consuming the
+synthesized signal as well as for verification of our results. Because
+our domain is music, we need to be able to play back signals as sound.
+Furthermore visualizing a signal can be useful for debugging since some
+properties of a signal are better conceivied visually than
+aurally\footnote{Still, verifying signals by means of hearing has top
+priority}.
+
+For both forms of presentation a technique called \textit{sampling} is
+used --- which will not be described in detail here. All that is needed
+to know for this approach, is that the sampling routine records a
+sequence of linear amplitude values according to a timespan and a
+function --- or signal --- which maps values of time to values of
+amplitude. The resulting sequence resembles the kind of data that can be
+fed into standard digital sound adapters or plotting applications.
+
+\begin{figure}
+\centering
+\texttt{(FUNCTION ((FUNCTION (REAL) REAL) REAL) (VECTOR REAL))}
+\figcaption{Approximate type of a sampling function.}
+\end{figure}
+
+\texttt{SOUNDLAB} derives its signal type from this rationale. It also
+exports two functions \texttt{EXPORT-FUNCTION-WAVE} and
+\texttt{EXPORT-FUNCTION-GRAPH} which generate standard \textit{RIFF/WAVE}
+audio files and \textit{Gnuplot} compatible data files.
+
+\begin{figure}
+\centering
+\texttt{(FUNCTION (REAL) REAL)}
+\figcaption{Type of a signal.}
+\end{figure}
