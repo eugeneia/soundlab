@@ -8,8 +8,9 @@
 (in-package :soundlab-asd)
 
 (defsystem soundlab
-  :description
-  "A somewhat monadic digital synthesizer. Pretty mad."
+  :description "Lazy signal synthesis based on combinators. Pretty mad."
+  :author "Max Rottenkolber <max@mr.gy>"
+  :license "GNU Affero General Public License"
   :components ((:file "packages")
 	       (:file "sampling/sample-function"
 		      :depends-on ("packages"))
@@ -60,5 +61,4 @@
 	       (:file "combinators/envelope"
 		      :depends-on ("packages"
 				   "combinators/algebra")))
-  :depends-on ("riff-wave"
-	       "defmacro!"))
+  :depends-on ("riff-wave"))

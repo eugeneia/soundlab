@@ -5,8 +5,7 @@
    "Procedures for sampling functions with support for exporting WAVE
 files and Gnuplot compatible data files.")
   (:use :cl
-	:riff-wave.write
-	:defmacro!)
+	:riff-wave.write)
   (:export :sample-function
 	   :sample-function-graph
 	   :export-function-graph
@@ -26,6 +25,7 @@ files and Gnuplot compatible data files.")
   (:use :cl)
   (:export :bpm-quarter-note
 	   :interval-frequency
+	   :tempo-offset
 	   :set-tempo
 	   :note :note-if
 	   :1/2-note :1/2-note-if

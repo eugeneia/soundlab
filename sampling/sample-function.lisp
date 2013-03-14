@@ -7,11 +7,11 @@
 FREQUENCY in hertz."
   (nth-value 0 (floor (* length frequency))))
 
-(defmacro! for-sample (x-var n-var o!length o!frequency
-		       &body loop-body)
+(defmacro for-sample (x-var n-var length frequency
+		      &body loop-body)
   "Looping construct speciaized for sampling."
-  `(loop for ,x-var from 0 to ,g!length by (/ 1 ,g!frequency)
-         for ,n-var upto (1- (n-samples ,g!length ,g!frequency))
+  `(loop for ,x-var from 0 to ,length by (/ 1 frequency)
+         for ,n-var upto (1- (n-samples length frequency))
 	,@loop-body))
 
 (defun sample-function (function length frequency)
