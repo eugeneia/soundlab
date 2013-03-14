@@ -2,7 +2,7 @@
 
 (in-package :soundlab.sampling)
 
-(defconstant +graph-output-format+ "~8f ~8f~%"
+(defparameter *graph-output-format* "~8f ~8f~%"
   "Gnuplot compatible representation for samples.")
 
 (defun sample-function-graph (function length frequency stream)
@@ -10,7 +10,7 @@
 STREAM as a Gnuplot compatible data."
   (let ((samples (sample-function function length frequency)))
     (loop for (x-value . y-value) across samples
-       do (format stream +graph-output-format+ x-value y-value))
+       do (format stream *graph-output-format* x-value y-value))
     samples))
 
 (defun export-function-graph (function length frequency path
