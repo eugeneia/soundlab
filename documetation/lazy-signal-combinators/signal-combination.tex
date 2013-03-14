@@ -1,0 +1,85 @@
+\subsection{Signal combination}
+
+As seen in the previous section, modelling signals as functions
+enables us to write small, cheap and powerful signal combinators which
+can be chained to arbitrary extent. When chosen carefully, a small set of
+primitive combinators and signals can be used to create infinitely
+complex sounds.
+
+\begin{figure}
+\centering
+\begin{verbatim}
+(FUNCTION (&REST (FUNCTION (REAL) REAL)) (FUNCTION (REAL) REAL))
+\end{verbatim}
+\figcaption{Type of a signal combinator.}
+\end{figure}
+
+While building \texttt{SOUNDLAB}, some primitives turned out to be
+especially useful. \texttt{FLATLINE} --- a constant signal constructor
+--- serves a simple but important purpose. It takes a number as its only
+argument and returns a flat signal with a constant amplitude. When passed
+to a signal combinator its purpose is usually to scale combinations of
+signals. \texttt{ADD} is a general signal adder. It takes an arbitrary
+number of signals and sums them. Likewise, \texttt{MULTIPLY} multiplies
+signals. The \texttt{CHORD} combinator of the previous section can be
+defined using these primitives.
+
+\begin{figure}
+\centering
+\begin{verbatim}
+(defun flatline (amplitude)
+  (lambda (x)
+    (declare (ignore x))
+    amplitude))
+\end{verbatim}
+\figcaption{Implementation of \texttt{FLATLINE}.}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{verbatim}
+(defun chord (&rest signals)
+  (multiply (apply #'add signals)
+            (flatline (/ 1 (length signals)))))
+\end{verbatim}
+\figcaption{Compound implementation of \texttt{CHORD}.}
+\end{figure}
+
+Furthermore, using signals as arguments to operations where constants
+would suffice whenever possible has proven to be feasible and powerful.
+Whenever a component is being modelled that would be controlled by a knob
+or fader in an analogue synthesizer, then its digital counterpart should
+be controlled by a signal. Take for instance a signal combinator
+\texttt{MIX} whose purpose is to merge two signals just like
+\texttt{CHORD} while additionally providing a way to control how much
+each input signal amounts to the mixed signal. So what would have been a
+\textit{Dry/Wet} knob on an analogoue synthesizer becomes a signal in our
+case. Our \texttt{MIX} takes three signals as arguments, two to be mixed
+and a third to control their amounts. For ease of implementation we also
+introduce \texttt{SUBTRACT} and \texttt{DIVIDE}, the respective
+counterparts of \texttt{ADD} and \texttt{MULTIPLY}.
+
+\begin{figure}
+\centering
+\begin{verbatim}
+(defun mix (signal-a signal-b ratio-signal)
+  ;; Normalise RATIO-SIGNAL to range from 0 to 1.
+  (let ((ratio (divide (add ratio-signal (flatline 1))
+                       (flatline 2))))
+    ;; Combine signals. Somewhat ugly due to didactic lack of SUBTRACT.
+    (add (multiply signal-a (subtract (flatline 1) ratio))
+         (multiply signal-b ratio))))
+\end{verbatim}
+\figcaption{Implementation of \texttt{MIX} using \texttt{ADD},
+  \texttt{MULTIPLY} and \texttt{FLATLINE} only.}
+\end{figure}
+
+Staying within closure of the signal representation --- that is trying
+hard to define our operations on a uniform signal represenation only ---
+grants the system a lot of power and flexbility. All of the presented
+signal combinators can be plugged into each other without restriction. As
+of now some care has to be taken to not produce signals exceeding the
+defined boundaries --- see \textit{Rendering signals} --- but in all
+other respects the systems dynamics are intuitive.
+
+% Maybe: Bottom up, top down? PITCH combinator could obsolete SINE

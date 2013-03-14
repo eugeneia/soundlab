@@ -1,10 +1,12 @@
+\section{Rendering signals}
+
 Before discussing signal synthesis, we must define ways for consuming the
 synthesized signal as well as for verification of our results. Because
 our domain is music, we need to be able to play back signals as sound.
 Furthermore visualizing a signal can be useful for debugging since some
 properties of a signal are better conceivied visually than
-aurally\footnote{Still, verifying signals by means of hearing has top
-priority}.
+aurally\footnote{Still, verifying signals by means of hearing is often a
+more effective and gratifying experience.}.
 
 For both forms of presentation a technique called \textit{sampling} is
 used --- which will not be described in detail here. All that is needed
@@ -16,17 +18,18 @@ fed into standard digital sound adapters or plotting applications.
 
 \begin{figure}
 \centering
-\texttt{(FUNCTION ((FUNCTION (REAL) REAL) REAL) (VECTOR REAL))}
+\begin{verbatim}
+(FUNCTION ((FUNCTION (REAL) REAL) REAL) (VECTOR REAL))
+\end{verbatim}
 \figcaption{Approximate type of a sampling function.}
 \end{figure}
 
 \texttt{SOUNDLAB} derives its signal type from this rationale. It also
 exports two functions \texttt{EXPORT-FUNCTION-WAVE} and
-\texttt{EXPORT-FUNCTION-GRAPH} which generate standard \textit{RIFF/WAVE}
-audio files and \textit{Gnuplot} compatible data files.
-
-\begin{figure}
-\centering
-\texttt{(FUNCTION (REAL) REAL)}
-\figcaption{Type of a signal.}
-\end{figure}
+\texttt{EXPORT-FUNCTION-GRAPH} which record signals to standard
+\textit{RIFF/WAVE} audio files and \textit{Gnuplot} compatible data files
+respectively. \texttt{SOUNDLAB} also chooses arbitrary but sensible units
+and scales for time and amplitude. Time is chosen to be a number in
+seconds greater than zero and amplitude is chosen to be a number ranging
+from $-1$ to $1$. Results of inputs to the sampling routine exceeding
+these bounds are undefined.

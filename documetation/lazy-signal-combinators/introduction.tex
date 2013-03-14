@@ -1,23 +1,26 @@
+\section{Introduction}
+
 The described approach is mainly inspired from experience gained by using
 analogue sound synthesizers. While every analogue synthesizer has its own
 unique sound based on the physical parts it is made of, most do share
 their key concepts. Usually a limited number oscillators generate signals
 resembling --- more or less --- sine waves which are then modulated by
-being combined with each other in a number of ways.
+being combined with each other in different ways.
 
 \texttt{SOUNDLAB} --- an experimental implementation of the approach ---
 is designed to enable the user to explore ways of signal combination. It
-does so by defining an embdedded \textit{domain specific language} which
+does so by defining an embedded \textit{domain specific language} which
 provides axioms that generate primitive signals and axioms that combine
-arbitrary signals forming new signals. Furthermore \texttt{SOUNDLAB}
-allows the use of \textit{Common Lisp's} means of abstraction to define
-compound signals and signal combinators. Primitive as well as compound
-parts of the system form a homogenous group of objects defined by their
-shared interfaces, which grant the system power and flexibility similar
-to a \textit{Lisp} system.
+arbitrary signals into new signals. Furthermore \texttt{SOUNDLAB} allows
+the use of \textit{Common Lisp's} means of abstraction to define compound
+signals and signal combinators. Primitive as well as compound parts of the
+system form a homogenous group of objects defined by their shared
+interfaces, which grant the system power and flexibility of a
+\textit{Lisp} system.
 
 There are of course many free software implementations\footnote{TODO:
 Reference.} of signal synthesis systems with programming language 
 interfaces. However, most concentrate on integration with graphical
-interfaces and none of these integrate tightly with \textit{Common Lisp}
-to reuse its powerful means of abstraction.
+interface toolkits rather than powerful languages and none of these
+integrate tightly with \textit{Common Lisp} to reuse the powerful means of
+abstraction it provides.
