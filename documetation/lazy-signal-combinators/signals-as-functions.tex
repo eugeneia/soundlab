@@ -1,49 +1,44 @@
 \subsection{Signals as functions}
 
-\begin{figure}
-\centering
-\texttt{(FUNCTION (REAL) REAL)}
-\figcaption{Type of a signal.}
-\end{figure}
-
 As discussed in the previous section, functions seem to be a natural way
 to model a signal. Furthermore signals as functions encourage lazy
-operations without enforcing them.\footnote{When designing a real-time
-signal synthesis system a non-lazy approach may be more suited.}
+operations without enforcing them --- which can later be useful for
+aggressive optimizations.
+
+\begin{verbatim}
+;;; Type of a signal.
+
+(FUNCTION (REAL) REAL)
+\end{verbatim}
 
 A cruical type of signal is the sine wave --- since in theory, all
 signals are sums of sine waves. \textit{Common Lisp} provides us with a
 sine function \texttt{SIN} which serves our purpose well. We could pass
-\texttt{#'SIN} to a sampling routine as is, which would produce a very
-low frequency\footnote{Very low in terms of aural perception.} signal
-below the human hearing threshold. In order to specify other frequencies
-a constructor \texttt{SINE} is defined which accepts a freqency in Hz and
-returns the respective sine signal.
+\texttt{\#'SIN} to a sampling routine as is, which would produce a very
+low frequency signal below the human hearing threshold. In order to
+specify other frequencies a constructor \texttt{SINE} is defined which
+accepts a freqency in Hz and returns the respective sine signal.
 
-\begin{figure}
-\centering
 \begin{verbatim}
+;;; Constructor for primitive sine signals.
+
 (defun sine (frequency)
   (lambda (x) (sin (* 2 pi frequency x))))
 \end{verbatim}
-\figcaption{Constructor for primitive sine signals.}
-\end{figure}
 
 Additonally a constructor for chorded signals could be defined as a
 function that takes two signals as arguments and returns a function that
-sums and normalises\footnote{Remember the boundaries defined in the
-previous section.} them.
+sums and normalises them accoring to the boundaries we defined in the
+previous section.
 
-\begin{figure}
-\centering
 \begin{verbatim}
+;;; Constructor for a chord of two signals.
+
 (defun chord-2 (signal-1 signal-2)
   (lambda (x) (* (+ (funcall signal-1 x)
                     (funcall signal-2 x))
                  1/2)))
 \end{verbatim}
-\figcaption{Constructor for a chord of two signals.}
-\end{figure}
 
 The \texttt{CHORD-2} function demonstrates the important traits of
 signals as functions. A new signal in form of an anonymous function is

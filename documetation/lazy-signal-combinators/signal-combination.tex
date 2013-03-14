@@ -6,13 +6,12 @@ can be chained to arbitrary extent. When chosen carefully, a small set of
 primitive combinators and signals can be used to create infinitely
 complex sounds.
 
-\begin{figure}
-\centering
 \begin{verbatim}
-(FUNCTION (&REST (FUNCTION (REAL) REAL)) (FUNCTION (REAL) REAL))
+;;; Type of a signal combinator.
+
+(FUNCTION (&REST (FUNCTION (REAL) REAL))
+          (FUNCTION (REAL) REAL))
 \end{verbatim}
-\figcaption{Type of a signal combinator.}
-\end{figure}
 
 While building \texttt{SOUNDLAB}, some primitives turned out to be
 especially useful. \texttt{FLATLINE} --- a constant signal constructor
@@ -21,29 +20,25 @@ argument and returns a flat signal with a constant amplitude. When passed
 to a signal combinator its purpose is usually to scale combinations of
 signals. \texttt{ADD} is a general signal adder. It takes an arbitrary
 number of signals and sums them. Likewise, \texttt{MULTIPLY} multiplies
-signals. The \texttt{CHORD} combinator of the previous section can be
-defined using these primitives.
+signals. The \texttt{CHORD-2} combinator of the previous section can be
+defined more generally using these primitives.
 
-\begin{figure}
-\centering
 \begin{verbatim}
+;;; Implementation of FLATLINE.
+
 (defun flatline (amplitude)
   (lambda (x)
     (declare (ignore x))
     amplitude))
 \end{verbatim}
-\figcaption{Implementation of \texttt{FLATLINE}.}
-\end{figure}
 
-\begin{figure}
-\centering
 \begin{verbatim}
+;;; Generic implementation of CHORD.
+
 (defun chord (&rest signals)
   (multiply (apply #'add signals)
             (flatline (/ 1 (length signals)))))
 \end{verbatim}
-\figcaption{Compound implementation of \texttt{CHORD}.}
-\end{figure}
 
 Furthermore, using signals as arguments to operations where constants
 would suffice whenever possible has proven to be feasible and powerful.
@@ -59,20 +54,21 @@ and a third to control their amounts. For ease of implementation we also
 introduce \texttt{SUBTRACT} and \texttt{DIVIDE}, the respective
 counterparts of \texttt{ADD} and \texttt{MULTIPLY}.
 
-\begin{figure}
-\centering
 \begin{verbatim}
+;;; Implementation of MIX.
+
 (defun mix (signal-a signal-b ratio-signal)
   ;; Normalise RATIO-SIGNAL to range from 0 to 1.
-  (let ((ratio (divide (add ratio-signal (flatline 1))
+  (let ((ratio (divide (add ratio-signal
+                            (flatline 1))
                        (flatline 2))))
-    ;; Combine signals. Somewhat ugly due to didactic lack of SUBTRACT.
-    (add (multiply signal-a (subtract (flatline 1) ratio))
-         (multiply signal-b ratio))))
+    ;; Combine signals. Somewhat ugly due to
+    ;; didactic lack of SUBTRACT.
+    (add (multiply signal-a
+                   (subtract (flatline 1) ratio))
+         (multiply signal-b
+                   ratio))))
 \end{verbatim}
-\figcaption{Implementation of \texttt{MIX} using \texttt{ADD},
-  \texttt{MULTIPLY} and \texttt{FLATLINE} only.}
-\end{figure}
 
 Staying within closure of the signal representation --- that is trying
 hard to define our operations on a uniform signal represenation only ---
@@ -80,6 +76,6 @@ grants the system a lot of power and flexbility. All of the presented
 signal combinators can be plugged into each other without restriction. As
 of now some care has to be taken to not produce signals exceeding the
 defined boundaries --- see \textit{Rendering signals} --- but in all
-other respects the systems dynamics are intuitive.
+other respects the system behaves intuitively.
 
 % Maybe: Bottom up, top down? PITCH combinator could obsolete SINE
