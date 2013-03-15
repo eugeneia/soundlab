@@ -1,8 +1,8 @@
 \subsection{Signals as functions}
 
-As discussed in the previous section, functions seem to be a natural way
+As discussed in the previous section, functions are the natural way
 to model a signal. Furthermore signals as functions encourage lazy
-operations without enforcing them --- which can later be useful for
+operations without enforcing them---which can later be useful for
 aggressive optimizations.
 
 \begin{verbatim}
@@ -11,13 +11,13 @@ aggressive optimizations.
 (FUNCTION (REAL) REAL)
 \end{verbatim}
 
-A cruical type of signal is the sine wave --- since in theory, all
+A crucial type of signal is the sine wave---since in theory, all
 signals are sums of sine waves. \textit{Common Lisp} provides us with a
 sine function \texttt{SIN} which serves our purpose well. We could pass
 \texttt{\#'SIN} to a sampling routine as is, which would produce a very
 low frequency signal below the human hearing threshold. In order to
 specify other frequencies a constructor \texttt{SINE} is defined which
-accepts a freqency in Hz and returns the respective sine signal.
+accepts a frequency in Hz and returns the respective sine signal.
 
 \begin{verbatim}
 ;;; Constructor for primitive sine signals.
@@ -26,9 +26,9 @@ accepts a freqency in Hz and returns the respective sine signal.
   (lambda (x) (sin (* 2 pi frequency x))))
 \end{verbatim}
 
-Additonally a constructor for chorded signals could be defined as a
+Additionally a constructor for chorded signals could be defined as a
 function that takes two signals as arguments and returns a function that
-sums and normalises them accoring to the boundaries we defined in the
+sums and normalizes them according to the boundaries we defined in the
 previous section.
 
 \begin{verbatim}

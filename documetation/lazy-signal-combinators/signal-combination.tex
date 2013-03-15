@@ -1,6 +1,6 @@
 \subsection{Signal combination}
 
-As seen in the previous section, modelling signals as functions
+As seen in the previous section, modeling signals as functions
 enables us to write small, cheap and powerful signal combinators which
 can be chained to arbitrary extent. When chosen carefully, a small set of
 primitive combinators and signals can be used to create infinitely
@@ -14,14 +14,14 @@ complex sounds.
 \end{verbatim}
 
 While building \texttt{SOUNDLAB}, some primitives turned out to be
-especially useful. \texttt{FLATLINE} --- a constant signal constructor
---- serves a simple but important purpose. It takes a number as its only
-argument and returns a flat signal with a constant amplitude. When passed
-to a signal combinator its purpose is usually to scale combinations of
-signals. \texttt{ADD} is a general signal adder. It takes an arbitrary
-number of signals and sums them. Likewise, \texttt{MULTIPLY} multiplies
-signals. The \texttt{CHORD-2} combinator of the previous section can be
-defined more generally using these primitives.
+especially useful. \texttt{FLATLINE}---a constant signal
+constructor---serves a simple but important purpose. It takes a number as
+its only argument and returns a flat signal with a constant
+amplitude. When passed to a signal combinator its purpose is usually to
+scale combinations of signals. \texttt{ADD} is a general signal adder. It
+takes an arbitrary number of signals and sums them. Likewise,
+\texttt{MULTIPLY} multiplies signals. The \texttt{CHORD-2} combinator of
+the previous section can be defined more generally using these primitives.
 
 \begin{verbatim}
 ;;; Implementation of FLATLINE.
@@ -42,40 +42,61 @@ defined more generally using these primitives.
 
 Furthermore, using signals as arguments to operations where constants
 would suffice whenever possible has proven to be feasible and powerful.
-Whenever a component is being modelled that would be controlled by a knob
+Whenever a component is being modeled that would be controlled by a knob
 or fader in an analogue synthesizer, then its digital counterpart should
 be controlled by a signal. Take for instance a signal combinator
-\texttt{MIX} whose purpose is to merge two signals just like
-\texttt{CHORD} while additionally providing a way to control how much
+\texttt{MIX*} whose purpose is to merge two signals---just like
+\texttt{CHORD}---while additionally providing a way to control how much
 each input signal amounts to the mixed signal. So what would have been a
-\textit{Dry/Wet} knob on an analogoue synthesizer becomes a signal in our
-case. Our \texttt{MIX} takes three signals as arguments, two to be mixed
+\textit{Dry/Wet} knob on an analogue synthesizer becomes a signal in our
+case. Our \texttt{MIX*} takes three signals as arguments, two to be mixed
 and a third to control their amounts. For ease of implementation we also
-introduce \texttt{SUBTRACT} and \texttt{DIVIDE}, the respective
-counterparts of \texttt{ADD} and \texttt{MULTIPLY}.
+introduce \texttt{SUBTRACT}---the counterpart to \texttt{ADD}.
 
 \begin{verbatim}
-;;; Implementation of MIX.
+;;; Implementation of MIX*.
 
 (defun mix (signal-a signal-b ratio-signal)
-  ;; Normalise RATIO-SIGNAL to range from 0 to 1.
-  (let ((ratio (divide (add ratio-signal
-                            (flatline 1))
-                       (flatline 2))))
-    ;; Combine signals. Somewhat ugly due to
-    ;; didactic lack of SUBTRACT.
-    (add (multiply signal-a
-                   (subtract (flatline 1) ratio))
-         (multiply signal-b
-                   ratio))))
+  (add (multiply signal-a
+                 (subtract (flatline 1) ratio-signal))
+       (multiply signal-b
+                 ratio-signal)))
 \end{verbatim}
 
-Staying within closure of the signal representation --- that is trying
-hard to define our operations on a uniform signal represenation only ---
-grants the system a lot of power and flexbility. All of the presented
-signal combinators can be plugged into each other without restriction. As
-of now some care has to be taken to not produce signals exceeding the
-defined boundaries --- see \textit{Rendering signals} --- but in all
-other respects the system behaves intuitively.
+Staying within closure of the signal representation---that is trying
+hard to define our operations on a uniform signal representation
+only---grants the system a lot of power and flexibility. All of the
+presented signal combinators can be plugged into each other without
+restriction. As of now some care has to be taken to not produce signals
+exceeding the defined boundaries---see \textit{Rendering signals}.
+Additionally, some combinators make use of non-audible signals. For
+instance \texttt{MIX*} expects \texttt{RATIO-SIGNAL} to return values
+ranging from zero to one and \texttt{MULTIPLY} is used in combination
+with \texttt{FLATLINE} to moderate signals. Nevertheless, our few
+examples can already be used to produce complex sounds. The code snippet
+below works in \texttt{SOUNDLAB} as is and produces a rhythmically phasing
+sound.
 
-% Maybe: Bottom up, top down? PITCH combinator could obsolete SINE
+\begin{verbatim}
+;;; Possible usage of the presented combinators.
+
+(defun a-4 () (sine 440))
+(defun a-5 () (sine 220))
+
+;; Normalize a sine to 0-1 for use as RATIO-SIGNAL.
+(defun sine-ratio ()
+  (multiply (add (sine 1)
+                 (flatline 1))
+            (flatline 1/2)))
+
+;; Produce a WAVE file.
+(export-function-wave
+  ;; A complex signal.
+  (mix* (chord (a-4) (a-5))
+        (multiply (a-4) (a-5))
+        (sine-ratio))
+  ;; Length of the sampling in seconds.
+  4
+  ;; Output file.
+  #p"test.wav")
+\end{verbatim}
