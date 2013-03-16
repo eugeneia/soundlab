@@ -40,3 +40,8 @@
 	   1/32-note    (/ 1/4-note 8)
 	   1/32-note-if (interval-frequency 1/32-note))
      note))
+
+(defun tempo-offset (from &optional (to note))
+  "Calculate tempo offset of FROM and TO."
+  (/ (- from to) to))
+
