@@ -58,7 +58,8 @@ introduce \texttt{SUBTRACT}---the counterpart to \texttt{ADD}.
 
 (defun mix (signal-a signal-b ratio-signal)
   (add (multiply signal-a
-                 (subtract (flatline 1) ratio-signal))
+                 (subtract (flatline 1)
+                           ratio-signal))
        (multiply signal-b
                  ratio-signal)))
 \end{verbatim}
