@@ -60,5 +60,6 @@
 				   "waves/flatline"))
 	       (:file "combinators/envelope"
 		      :depends-on ("packages"
-				   "combinators/algebra")))
+				   "combinators/algebra"))
+	       (:file "filters/lowslope"))
   :depends-on ("riff-wave"))
