@@ -21,7 +21,7 @@ amplitude. When passed to a signal combinator its purpose is usually to
 scale combinations of signals. \texttt{ADD} is a general signal adder. It
 takes an arbitrary number of signals and sums them. Likewise,
 \texttt{MULTIPLY} multiplies signals. The \texttt{CHORD-2} combinator of
-the previous section can be defined more generally using these primitives.
+the previous section can be defined more generally using these primitives.  
 
 \begin{verbatim}
 ;;; Implementation of FLATLINE.
@@ -40,6 +40,23 @@ the previous section can be defined more generally using these primitives.
             (flatline (/ 1 (length signals)))))
 \end{verbatim}
 
+Note that---due to the normalization performed by \texttt{CHORD-2}---the
+equivalent of \texttt{(chord a b c)} is
+
+\begin{verbatim}
+(chord-2 (chord-2 a b) (chord-2 c (flatline 1)))
+\end{verbatim}
+
+as opposed to 
+
+\begin{verbatim}
+(chord-2 (chord-2 a b) c)
+\end{verbatim}
+
+which would produce the chord of \texttt{C} and the chord of \texttt{A}
+and \texttt{B} instead of the chord of \texttt{A}, \texttt{B} and
+\texttt{C}.
+
 Furthermore, using signals as arguments to operations where constants
 would suffice whenever possible has proven to be feasible and powerful.
 Whenever a component is being modeled that would be controlled by a knob
@@ -56,7 +73,7 @@ introduce \texttt{SUBTRACT}---the counterpart to \texttt{ADD}.
 \begin{verbatim}
 ;;; Implementation of MIX*.
 
-(defun mix (signal-a signal-b ratio-signal)
+(defun mix* (signal-a signal-b ratio-signal)
   (add (multiply signal-a
                  (subtract (flatline 1)
                            ratio-signal))
@@ -73,10 +90,13 @@ exceeding the defined boundaries---see \textit{Rendering signals}.
 Additionally, some combinators make use of non-audible signals. For
 instance \texttt{MIX*} expects \texttt{RATIO-SIGNAL} to return values
 ranging from zero to one and \texttt{MULTIPLY} is used in combination
-with \texttt{FLATLINE} to moderate signals. Nevertheless, our few
-examples can already be used to produce complex sounds. The code snippet
-below works in \texttt{SOUNDLAB} as is and produces a rhythmically phasing
-sound.
+with \texttt{FLATLINE} to moderate signals. \texttt{SOUNDLAB} fails to
+address the issue of having multiple informal subtypes of signals. As of
+now the user has to refer to the documentation of a combinator to find
+out if it expects certain constraints---as is the case with \texttt{MIX*}.
+Nevertheless, our few examples can already be used to produce complex
+sounds. The code snippet below works in \texttt{SOUNDLAB} as is and
+produces a rhythmically phasing sound.
 
 \begin{verbatim}
 ;;; Possible usage of the presented combinators.

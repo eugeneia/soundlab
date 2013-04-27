@@ -12,10 +12,24 @@ The demonstrated approach proved to be especially suited to exploratory
 sound engineering. Ad-hoc signal pipelines can be built quickly in a
 declarative way, encouraging re-usability and creativity. In comparison to
 other tools in the domain the line between using and extending the system
-is blurry. Many of \textit{Common Lisp's} idioms proved to be an ideal
+is blurry. Where \textit{Csound} lets the user declaratively configure
+instruments and controls using \textit{XML}, \texttt{SOUNDLAB} emphasizes
+the user to use its built-in primitives and all of \textit{Common Lisp}
+to stack layers of signal sources and modulators on top of each other.  
+When compared to \textit{Overtone}---a \textit{Clojure} front-end to the
+\textit{SuperCollider} audio system---\texttt{SOUNDLAB}'s back-end
+independency and simplicity make it seem more suited for exploration and
+hacking. Its core concepts are few and simple and its codebase is tiny
+and modular despite some advanced features like envelopes, musical scales
+and tempo, a lowpass filter and many kinds of signal combinators being
+implemented.
+
+Many of \textit{Common Lisp's} idioms proved to be an ideal
 fit for the domain of signal synthesis. Furthermore, embedding a signal
 synthesis language in \textit{Common Lisp} provides the system with
-unmatched agility.
+unmatched agility. While the core approach is mainly built on top of
+functional paradigms, extensions like signal subtype checking---as
+mentioned in section 3.2---could be implemented using macros.
 
 I personally had tons of fun building and playing with
 \texttt{SOUND\-LAB}. I encourage everyone interested in computerized

@@ -1,0 +1,164 @@
+diff --git a/documentation/lazy-signal-combinators/conclusions.tex b/documentation/lazy-signal-combinators/conclusions.tex
+index b7b7e19..423bc56 100644
+--- a/documentation/lazy-signal-combinators/conclusions.tex
++++ b/documentation/lazy-signal-combinators/conclusions.tex
+@@ -12,10 +12,24 @@ The demonstrated approach proved to be especially suited to exploratory
+ sound engineering. Ad-hoc signal pipelines can be built quickly in a
+ declarative way, encouraging re-usability and creativity. In comparison to
+ other tools in the domain the line between using and extending the system
+-is blurry. Many of \textit{Common Lisp's} idioms proved to be an ideal
++is blurry. Where \textit{Csound} lets the user declaratively configure
++instruments and controls using \textit{XML}, \texttt{SOUNDLAB} emphasizes
++the user to use its built-in primitives and all of \textit{Common Lisp}
++to stack layers of signal sources and modulators on top of each other.  
++When compared to \textit{Overtone}---a \textit{Clojure} front-end to the
++\textit{SuperCollider} audio system---\texttt{SOUNDLAB}'s back-end
++independency and simplicity make it seem more suited for exploration and
++hacking. Its core concepts are few and simple and its codebase is tiny
++and modular despite some advanced features like envelopes, musical scales
++and tempo, a lowpass filter and many kinds of signal combinators being
++implemented.
++
++Many of \textit{Common Lisp's} idioms proved to be an ideal
+ fit for the domain of signal synthesis. Furthermore, embedding a signal
+ synthesis language in \textit{Common Lisp} provides the system with
+-unmatched agility.
++unmatched agility. While the core approach is mainly built on top of
++functional paradigms, extensions like signal subtype checking---as
++mentioned in section 3.2---could be implemented using macros.
+ 
+ I personally had tons of fun building and playing with
+ \texttt{SOUND\-LAB}. I encourage everyone interested in computerized
+diff --git a/documentation/lazy-signal-combinators/introduction.tex b/documentation/lazy-signal-combinators/introduction.tex
+index 28f4dbd..2ea35f1 100644
+--- a/documentation/lazy-signal-combinators/introduction.tex
++++ b/documentation/lazy-signal-combinators/introduction.tex
+@@ -11,19 +11,20 @@ by being combined with each other in different ways.
+ approach---is designed to enable the user to explore ways of signal
+ combination. It does so by defining an embedded \textit{domain specific
+ language} which provides axioms that generate primitive signals and
+-axioms that combine arbitrary signals into new signals. Furthermore
+-\texttt{SOUNDLAB} allows the use of \textit{Common Lisp's} means of
+-abstraction to define compound signals and signal combinators. Primitive
+-as well as compound parts of the system form a homogeneous group of
+-objects defined by their shared interfaces, which grant the system power
+-and flexibility of a \textit{Lisp} system.
++axioms that combine arbitrary signals into new signals. The semantics of
++the language are based on a signal interface agreed on by every
++component. Furthermore \texttt{SOUNDLAB} allows the use of
++\textit{Common Lisp's} means of abstraction to define compound signals
++and signal combinators. Primitive as well as compound parts of the system
++form a homogeneous group of objects defined by their shared interfaces,
++which grant the system power and flexibility of a \textit{Lisp} system.
+ 
+ There are of course many free software implementations\footnote{See for
+-instance Csound (\texttt{http://www.csounds.com/}).} of signal synthesis
+-systems with programming language interfaces. However, most concentrate
+-on integration with graphical interface toolkits rather than powerful
+-languages and none of these integrate tightly with \textit{Common Lisp}
+-to reuse the powerful means of abstraction provided by it.
++instance Overtone (\texttt{http://overtone.github.io}) and Csound
++(\texttt{http://www.csounds.com}).} of signal synthesis systems with
++programming language interfaces. \texttt{SOUNDLAB} is---when compared to
++others---much simpler and entirely written and embedded in \textit{Common
++Lisp}.
+ 
+ \texttt{SOUNDLAB} is free software licensed under the \textit{GNU AGPL}
+ and can be obtained at \texttt{http://mr.gy/software/soundlab/}.
+diff --git a/documentation/lazy-signal-combinators/lazy-signal-combinators.tex b/documentation/lazy-signal-combinators/lazy-signal-combinators.tex
+index 479f7b5..47f4d59 100644
+--- a/documentation/lazy-signal-combinators/lazy-signal-combinators.tex
++++ b/documentation/lazy-signal-combinators/lazy-signal-combinators.tex
+@@ -1,3 +1,18 @@
++% Fixed issues:
++% + CHORD-2 chaining.
++%
++% + Non audible signals: There is an informal distinction between certain
++% types of symbols. SOUNDLAB does not address this consistently.
++%
++% + DSL? The agreement on interface (semantics) plus a set of vocabulary
++% makes a language. It's embedded because it reuses most of CL.
++%
++% + Why lisp and comparison to alternatives: soundlab is a signal
++% compiler, lisp is great for writing compilers, alternatives are much
++% larger and more complex, less close to CL.
++%
++% + typo? (defun mix)
++
+ \documentclass{acm_proc_article-sp}
+ \usepackage[utf8x]{inputenc}
+ \usepackage[ngerman]{babel}
+diff --git a/documentation/lazy-signal-combinators/signal-combination.tex b/documentation/lazy-signal-combinators/signal-combination.tex
+index 88367f4..2acd0c6 100644
+--- a/documentation/lazy-signal-combinators/signal-combination.tex
++++ b/documentation/lazy-signal-combinators/signal-combination.tex
+@@ -21,7 +21,7 @@ amplitude. When passed to a signal combinator its purpose is usually to
+ scale combinations of signals. \texttt{ADD} is a general signal adder. It
+ takes an arbitrary number of signals and sums them. Likewise,
+ \texttt{MULTIPLY} multiplies signals. The \texttt{CHORD-2} combinator of
+-the previous section can be defined more generally using these primitives.
++the previous section can be defined more generally using these primitives.  
+ 
+ \begin{verbatim}
+ ;;; Implementation of FLATLINE.
+@@ -40,6 +40,23 @@ the previous section can be defined more generally using these primitives.
+             (flatline (/ 1 (length signals)))))
+ \end{verbatim}
+ 
++Note that---due to the normalization performed by \texttt{CHORD-2}---the
++equivalent of \texttt{(chord a b c)} is
++
++\begin{verbatim}
++(chord-2 (chord-2 a b) (chord-2 c (flatline 1)))
++\end{verbatim}
++
++as opposed to 
++
++\begin{verbatim}
++(chord-2 (chord-2 a b) c)
++\end{verbatim}
++
++which would produce the chord of \texttt{C} and the chord of \texttt{A}
++and \texttt{B} instead of the chord of \texttt{A}, \texttt{B} and
++\texttt{C}.
++
+ Furthermore, using signals as arguments to operations where constants
+ would suffice whenever possible has proven to be feasible and powerful.
+ Whenever a component is being modeled that would be controlled by a knob
+@@ -56,7 +73,7 @@ introduce \texttt{SUBTRACT}---the counterpart to \texttt{ADD}.
+ \begin{verbatim}
+ ;;; Implementation of MIX*.
+ 
+-(defun mix (signal-a signal-b ratio-signal)
++(defun mix* (signal-a signal-b ratio-signal)
+   (add (multiply signal-a
+                  (subtract (flatline 1)
+                            ratio-signal))
+@@ -73,10 +90,13 @@ exceeding the defined boundaries---see \textit{Rendering signals}.
+ Additionally, some combinators make use of non-audible signals. For
+ instance \texttt{MIX*} expects \texttt{RATIO-SIGNAL} to return values
+ ranging from zero to one and \texttt{MULTIPLY} is used in combination
+-with \texttt{FLATLINE} to moderate signals. Nevertheless, our few
+-examples can already be used to produce complex sounds. The code snippet
+-below works in \texttt{SOUNDLAB} as is and produces a rhythmically phasing
+-sound.
++with \texttt{FLATLINE} to moderate signals. \texttt{SOUNDLAB} fails to
++address the issue of having multiple informal subtypes of signals. As of
++now the user has to refer to the documentation of a combinator to find
++out if it expects certain constraints---as is the case with \texttt{MIX*}.
++Nevertheless, our few examples can already be used to produce complex
++sounds. The code snippet below works in \texttt{SOUNDLAB} as is and
++produces a rhythmically phasing sound.
+ 
+ \begin{verbatim}
+ ;;; Possible usage of the presented combinators.
+diff --git a/documentation/lazy-signal-combinators/signals-as-functions.tex b/documentation/lazy-signal-combinators/signals-as-functions.tex
+index 4cf81b0..93e07c3 100644
+--- a/documentation/lazy-signal-combinators/signals-as-functions.tex
++++ b/documentation/lazy-signal-combinators/signals-as-functions.tex
+@@ -45,4 +45,4 @@ signals as functions. A new signal in form of an anonymous function is
+ being compiled whenever we call \texttt{CHORD-2}. Because the actual
+ processing of the arguments is postponed until sampling occurs,
+ operation on signals is cheap. Furthermore calls to \texttt{CHORD-2}
+-can be chained to create chords with an arbitrary number of voices.
++can be combined to create chords with an arbitrary number of voices.
