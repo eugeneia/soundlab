@@ -1,0 +1,7 @@
+Primitive signals: Functions which generate basic waveforms.
+
+Combinators: Combine primitive or compound signals to new compond
+signals.
+
+Utilities: Mostly functions dealing with time, musical scale and glue for
+different types of signals.
