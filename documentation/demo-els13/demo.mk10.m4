@@ -1,33 +1,13 @@
 changecom
 define(`notes', `ifdef(`slides',, `include(`annotations/$1.mk10')')')
 
-< Hi
-
- my name is Max Rottenkolber.
-
- I will talk about *exploratory sound synthesis using SOUNDLAB*.
-
 
  notes(`introduction')
 
->
-
-
-< Structure of this demo
-
- #table Table of contents.#
- | *I*   | HOW DOES THIS WORK?
- | *II*  | SIGNAL COMBINATION
- | *III* | OVERVIEW OF THE LIBRARY
- | *IV*  | USING {SOUNDLAB}
-
-
  notes(`structure')
 
->
 
-
-< *I* HOW DOES THIS WORK?
+< HOW DOES THIS WORK?
 
  #media The workflow.#
  figures/workflow.png
@@ -35,43 +15,63 @@ define(`notes', `ifdef(`slides',, `include(`annotations/$1.mk10')')')
 
  notes(`workflow')
 
+ 
+ < Whats a signal?
+
+  The sum of sines, e.g.
+
+  #media Sine.#
+  figures/sine.png
+
+  #media Sine noise.#
+  figures/sine-noise.png
+
+  A function which maps time to amplitude (-1..1) e.g. {#'SIN}.
+
+ >
+
+
+ < Recording sound
+
+  #media Sampling simplified.#
+  figures/sample.png
+
+
+  notes(`sample')
+
+ >
+
+
+ notes(`sample-test')
+
+>
+
+< SIGNAL COMBINATORS
+
+ #code Implementing {CHORD}.#
+ (defun chord (&rest signals)
+
+   (lambda (x)
+     (/ (loop for signal in signals
+           sum (funcall signal x))
+        (length signals)))
+
+   (divide (apply #'add signals)
+           (flatline (length signals)))
+ #
+
+ #code A common interface for time and amplitude modulation.#
+ (FUNCTION (&REST (FUNCTION (REAL) REAL))
+           (FUNCTION (REAL) REAL))
+ #
+
+
+ notes(`signal-combinators')
+
 >
 
 
-< Whats a signal?
-
- The sum of sines, e.g.
-
- #media Sine.#
- figures/sine.png
-
- or
-
- #media Sine noise.#
- figures/sine-noise.png
-
- For our purposes: A function which maps time to amplitude (-1 - 1),
- e.g. {#'SIN}.
-
-
->
-
-
-< Recording sound
-
- #media Sampling simplified.#
- figures/sample.png
-
-
- notes(`sample')
-
->
-
-
-notes(`sample-test')
-
-
-< *III* OVERVIEW OF THE LIBRARY
+< OVERVIEW OF THE LIBRARY
 
  #media Library overview.#
  figures/soundlab-overview.png
@@ -82,23 +82,13 @@ notes(`sample-test')
 >
 
 
-< *IV* USING {SOUNDLAB}
+< USING SOUNDLAB
 
- #media What we're gonna do.#
+ #media What we are going to do.#
  ../tutorial/figures/sketch.png
 
->
-
-
-< Voice envelope
-
  #media Voice envelope.#
- ../tutorial/figures/voice-envelope.png
-
->
-
-
-< Phaser envelope
+ ../tutorial/figures/voice-envelope-8th.png
 
  #media Phaser envelope.#
  ../tutorial/figures/phaser-envelope.png
