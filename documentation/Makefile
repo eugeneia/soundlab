@@ -18,4 +18,4 @@ demo-els13/slides.mk10 :
 
 .PHONY : clean
 clean :
-	rm -f example.lisp demo-els13/*.mk10
+	rm -f example.lisp demo-els13/demo.mk10 demo-els13/slides.mk10
