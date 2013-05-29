@@ -26,6 +26,7 @@ files and Gnuplot compatible data files.")
   (:export :bpm-quarter-note
 	   :interval-frequency
 	   :tempo-offset
+           :shift
 	   :set-tempo
 	   :note :note-if
 	   :1/2-note :1/2-note-if

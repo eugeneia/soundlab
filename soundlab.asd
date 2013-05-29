@@ -35,6 +35,8 @@
 		      :depends-on ("packages"))
 	       (:file "tempo/bpm"
 		      :depends-on ("packages"))
+	       (:file "tempo/shift"
+		      :depends-on ("packages"))
 	       (:file "envelope/curves"
 		      :depends-on ("packages"))
 	       (:file "envelope/adsr"
