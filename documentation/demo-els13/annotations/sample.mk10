@@ -1,5 +1,4 @@
-The sample function collects the results of a linear sequence of calls to
-a signal function.
-
-The results are written do disk in a _WAVE_ file, which is basically an
-array of fixnums.
++ The sample function collects the results of a linear sequence of calls to
+  a signal function.
++ The results are written to a _WAVE_ file, which is basically an array
+  of fixnums.

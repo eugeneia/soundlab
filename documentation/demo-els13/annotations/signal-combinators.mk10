@@ -1,0 +1,9 @@
++ Let's say we want to implement a function {CHORD}.
++ The first implementation is fairly straight forward thanks to the
+  {LOOP} macro.
++ This gets complicated really fast.
++ The second implementation uses the signal combinator approach
++ It reuses two combinators {DIVIDE} and {ADD} and a primitive signal
+  {FLATLINE}.
++ It's based on a common interface which grants composability and
+  reuseability.

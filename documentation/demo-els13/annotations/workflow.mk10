@@ -1,7 +1,4 @@
-We compile a signal.
-
-We pass a signal to our sample function.
-
-The sample function produces a _WAVE_ file.
-
-We then playback the result with {aplay} or similar.
++ We compile a signal.
++ We pass a signal to our sample function.
++ The sample function produces a _WAVE_ file.
++ We then playback the result with {aplay} or similar.
