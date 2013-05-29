@@ -1,3 +1,7 @@
 example.lisp
 demo-els13/demo.mk10
 demo-els13/slides.mk10
+*.aux
+*.log
+*.toc
+*.tex
