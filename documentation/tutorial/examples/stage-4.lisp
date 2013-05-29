@@ -14,4 +14,4 @@ See `figures/phaser-envelope.png'"
   (phaser (repeat (stage-3) note)
           (flatline 0.5)
           (multiply (phaser-envelope)
-                    (flatline 0.01))))
+                    (flatline 0.001))))
