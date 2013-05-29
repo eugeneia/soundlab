@@ -10,19 +10,19 @@
   "Return frequency for INTERVAL."
   (/ 1 interval))
 
-;; Dynamic variables for note lengths and interval frequencies (if)
-(defvar note         nil "Length of a note.")
-(defvar note-if      nil "Interval frequency for a note.")
-(defvar 1/2-note     nil "Length of a half note.")
-(defvar 1/2-note-if  nil "Interval frequency for a half note.")
-(defvar 1/4-note     nil "Length of a quarter note.")
-(defvar 1/4-note-if  nil "Interval frequency for a quarter note.")
-(defvar 1/8-note     nil "Length of an eighth note.")
-(defvar 1/8-note-if  nil "Interval frequency for an eighth note.")
-(defvar 1/16-note    nil "Length of a 16th note.")
-(defvar 1/16-note-if nil "Interval frequency for an 16th note.")
-(defvar 1/32-note    nil "Length of a 32th note.")
-(defvar 1/32-note-if nil "Interval frequency for an 32th note.")
+;; Global lexical variables for note lengths and interval frequencies.
+(define-symbol-macro note         (symbol-value 'note))
+(define-symbol-macro note-if      (symbol-value 'note-if))
+(define-symbol-macro 1/2-note     (symbol-value '1/2-note))
+(define-symbol-macro 1/2-note-if  (symbol-value '1/2-note-if))
+(define-symbol-macro 1/4-note     (symbol-value '1/4-note))
+(define-symbol-macro 1/4-note-if  (symbol-value '1/4-note-if))
+(define-symbol-macro 1/8-note     (symbol-value '1/8-note))
+(define-symbol-macro 1/8-note-if  (symbol-value '1/8-note-if))
+(define-symbol-macro 1/16-note    (symbol-value '1/16-note))
+(define-symbol-macro 1/16-note-if (symbol-value '1/16-note-if))
+(define-symbol-macro 1/32-note    (symbol-value '1/32-note))
+(define-symbol-macro 1/32-note-if (symbol-value '1/32-note-if))
 
 (defmacro set-tempo (tempo)
   "Set time variables according to TEMPO and return value of NOTE."
