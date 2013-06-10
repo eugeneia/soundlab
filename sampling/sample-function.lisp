@@ -9,7 +9,7 @@ FREQUENCY in hertz."
 
 (defmacro for-sample (x-var n-var length frequency
 		      &body loop-body)
-  "Looping construct speciaized for sampling."
+  "Looping construct specialized for sampling."
   `(loop for ,x-var from 0 to ,length by (/ 1 frequency)
          for ,n-var upto (1- (n-samples length frequency))
 	,@loop-body))

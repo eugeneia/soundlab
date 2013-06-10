@@ -5,12 +5,16 @@
    "Procedures for sampling functions with support for exporting WAVE
 files and Gnuplot compatible data files.")
   (:use :cl
-	:riff-wave.write)
+	:riff-wave.write
+        :riff-wave.read)
   (:export :sample-function
-	   :sample-function-graph
-	   :export-function-graph
-	   :sample-function-wave
-	   :export-function-wave))
+	   :sample-graph
+	   :export-graph
+	   :sample-wave
+	   :sample-wave*
+	   :export-wave
+	   :export-wave*
+           :wave-signals))
 
 (defpackage :soundlab.notes
   (:documentation
@@ -65,6 +69,8 @@ files and Gnuplot compatible data files.")
 	   :chord
 	   :mix
 	   :mix*
+           :stereo-mix
+           :stereo-mix*
 	   :dampen
 	   :pitch
 	   :pitch*
