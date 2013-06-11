@@ -5,7 +5,7 @@
 (defparameter *graph-output-format* "~8f ~8f~%"
   "Gnuplot compatible representation for samples.")
 
-(defun sample-function-graph (function length frequency stream)
+(defun sample-graph (function length frequency stream)
   "Sample FUNCTION from zero to LENGTH with FREQUENCY and write it to
 STREAM as a Gnuplot compatible data."
   (let ((samples (sample-function function length frequency)))
@@ -13,7 +13,7 @@ STREAM as a Gnuplot compatible data."
        do (format stream *graph-output-format* x-value y-value))
     samples))
 
-(defun export-function-graph (function length frequency path
+(defun export-graph (function length frequency path
 			      &key (if-exists :error))
   "Direct output of SAMPLE-FUNCTION-GRAPH to PATH. If PATH already exists
 use IF-EXISTS to control behaviour, default is :ERROR."
