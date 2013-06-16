@@ -21,14 +21,22 @@
               sample)
         value))
 
+(defun make-sample-buffer-signal (channel rate)
+  "Make signal for CHANNEL at RATE."
+  (let ((length (length channel)))
+    (lambda (x)
+      (let ((n (floor (* x rate))))
+        (if (>= n length) 0
+            (aref channel n))))))
+
 (defun sample-buffer-signals (sample-buffer)
   "Return signals for SAMPLE-BUFFER."
   (apply #'values
          (loop for channel across (sample-buffer%-channels sample-buffer)
-            collect (let ((ch channel)) ; lexic bind
-                      (lambda (x)
-                        (aref ch (floor (* x (sample-buffer%-rate
-                                              sample-buffer)))))))))
+            collect (make-sample-buffer-signal
+                     channel
+                     (sample-buffer%-rate sample-buffer)))))
+
 
 (defgeneric wave-signals (source)
   (:documentation "Return signal for WAVE data from SOURCE."))
