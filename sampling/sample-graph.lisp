@@ -7,7 +7,7 @@
 
 (defun sample-graph (function length frequency stream)
   "Sample FUNCTION from zero to LENGTH with FREQUENCY and write it to
-STREAM as a Gnuplot compatible data."
+STREAM as a Gnuplot compatible data file."
   (let ((samples (sample-function function length frequency)))
     (loop for (x-value . y-value) across samples
        do (format stream *graph-output-format* x-value y-value))
