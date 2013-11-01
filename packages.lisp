@@ -16,45 +16,14 @@ files and Gnuplot compatible data files.")
 	   :export-wave*
            :wave-signals))
 
-(defpackage :soundlab.notes
-  (:documentation
-   "Procedures which implement a simple western note system.")
-  (:use :cl)
-  (:export :shift-note
-	   :octave))
-
-(defpackage :soundlab.tempo
-  (:documentation
-   "Special timing variables and procedures to convert tempo units.")
-  (:use :cl)
-  (:export :bpm-quarter-note
-	   :interval-frequency
-	   :tempo-offset
-           :shift
-	   :set-tempo
-	   :note :note-if
-	   :1/2-note :1/2-note-if
-	   :1/4-note :1/4-note-if
-	   :1/8-note :1/8-note-if
-	   :1/16-note :1/16-note-if
-	   :1/32-note :1/32-note-if))
-
 (defpackage :soundlab.waves
   (:documentation
    "Procedures which generate wave forms.")
   (:use :cl)
   (:export :sine
 	   :binary
-	   :sawtooth
+;	   :sawtooth
 	   :flatline))
-
-(defpackage :soundlab.envelope
-  (:documentation
-   "Envelope implementation.")
-  (:use :cl)
-  (:export :envelope
-	   :linear
-	   :square))
 
 (defpackage :soundlab.combinators
   (:documentation
@@ -77,6 +46,30 @@ files and Gnuplot compatible data files.")
 	   :repeat
 	   :envelope*))
 
+(defpackage :soundlab.envelope
+  (:documentation
+   "Implementation of Attack-Decay-Sustain-Release envelopes.")
+  (:use :cl)
+  (:export :envelope
+	   :linear
+	   :square))
+
+(defpackage :soundlab.tempo
+  (:documentation
+   "Special timing variables and procedures to convert tempo units.")
+  (:use :cl)
+  (:export :bpm-quarter-note
+	   :interval-frequency
+	   :tempo-offset
+           :shift
+	   :set-tempo
+	   :note :note-if
+	   :1/2-note :1/2-note-if
+	   :1/4-note :1/4-note-if
+	   :1/8-note :1/8-note-if
+	   :1/16-note :1/16-note-if
+	   :1/32-note :1/32-note-if))
+
 (defpackage soundlab.waves.envelope
   (:documentation
    "Wave form from envelope.")
@@ -92,15 +85,22 @@ files and Gnuplot compatible data files.")
   (:use :cl)
   (:export :lowslope))
 
+(defpackage :soundlab.notes
+  (:documentation
+   "Procedures that implement a simple western note system.")
+  (:use :cl)
+  (:export :shift-note
+	   :octave))
+
 (defpackage :soundlab-user
   (:documentation
    "User package that interns all soundlab packages.")
   (:use :cl
 	:soundlab.sampling
 	:soundlab.waves
-	:soundlab.waves.envelope
-	:soundlab.notes
-	:soundlab.tempo
-	:soundlab.envelope
 	:soundlab.combinators
-	:soundlab.filters))
+	:soundlab.envelope
+	:soundlab.tempo
+	:soundlab.waves.envelope
+	:soundlab.filters
+	:soundlab.notes))
