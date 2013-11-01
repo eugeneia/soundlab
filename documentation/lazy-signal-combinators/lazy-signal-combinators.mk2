@@ -160,7 +160,7 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
   as opposed to 
 
   #code #
-  (chord-2 (chord-2 a b) c)}
+  (chord-2 (chord-2 a b) c)
   #
 
   which would produce the chord of {C} and the chord of {A} and {B}
