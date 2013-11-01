@@ -15,8 +15,8 @@ STREAM as a Gnuplot compatible data."
 
 (defun export-graph (function length frequency path
 			      &key (if-exists :error))
-  "Direct output of SAMPLE-FUNCTION-GRAPH to PATH. If PATH already exists
-use IF-EXISTS to control behaviour, default is :ERROR."
+  "Direct output of SAMPLE-GRAPH to PATH. If PATH already exists use
+IF-EXISTS to control behaviour, default is :ERROR."
   (with-open-file (out path
 		       :direction :output
 		       :if-exists if-exists)
