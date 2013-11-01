@@ -153,11 +153,15 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
   Note that—due to the normalization performed by {CHORD-2}—the
   equivalent of {(chord a b c)} is
 
-  {(chord-2 (chord-2 a b) (chord-2 c (flatline 1)))}
+  #code #
+  (chord-2 (chord-2 a b) (chord-2 c (flatline 1)))
+  #
 
   as opposed to 
 
-  {(chord-2 (chord-2 a b) c)}
+  #code #
+  (chord-2 (chord-2 a b) c)}
+  #
 
   which would produce the chord of {C} and the chord of {A} and {B}
   instead of the chord of {A}, {B} and {C}.
