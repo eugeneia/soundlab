@@ -62,6 +62,8 @@
 	       (:file "combinators/pitch"
 		      :depends-on ("packages"
 				   "waves/flatline"))
+	       (:file "combinators/duck"
+		      :depends-on ("packages" "combinators/algebra"))
 	       (:file "combinators/envelope"
 		      :depends-on ("packages"
 				   "combinators/algebra"))

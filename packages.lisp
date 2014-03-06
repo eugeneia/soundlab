@@ -44,7 +44,9 @@ files and Gnuplot compatible data files.")
 	   :pitch
 	   :pitch*
 	   :repeat
-	   :envelope*))
+	   :envelope*
+           :duck
+           :gate))
 
 (defpackage :soundlab.envelope
   (:documentation
