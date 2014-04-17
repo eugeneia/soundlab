@@ -14,7 +14,8 @@ files and Gnuplot compatible data files.")
 	   :sample-wave*
 	   :export-wave
 	   :export-wave*
-           :wave-signals))
+           :wave-signals
+           :cache))
 
 (defpackage :soundlab.waves
   (:documentation

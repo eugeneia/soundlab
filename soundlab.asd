@@ -22,6 +22,8 @@
                                    "sampling/sample-function"))
                (:file "sampling/wave-signals"
                       :depends-on ("packages"))
+               (:file "sampling/cache"
+                      :depends-on ("packages" "sampling/wave-signals"))
 	       (:file "waves/sine"
 		      :depends-on ("packages"))
 	       (:file "waves/binary"
