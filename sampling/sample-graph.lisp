@@ -20,4 +20,4 @@ IF-EXISTS to control behaviour, default is :ERROR."
   (with-open-file (out path
 		       :direction :output
 		       :if-exists if-exists)
-    (sample-function-graph function length frequency out)))
+    (sample-graph function length frequency out)))
