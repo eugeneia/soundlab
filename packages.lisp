@@ -48,7 +48,8 @@ files and Gnuplot compatible data files.")
 	   :repeat
 	   :envelope*
            :duck
-           :gate))
+           :gate
+           :function-ratio))
 
 (defpackage :soundlab.envelope
   (:documentation

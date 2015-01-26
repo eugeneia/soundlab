@@ -69,5 +69,7 @@
 	       (:file "combinators/envelope"
 		      :depends-on ("packages"
 				   "combinators/algebra"))
+	       (:file "combinators/utilities"
+		      :depends-on ("packages"))
 	       (:file "filters/lowslope"))
   :depends-on ("riff-wave"))
