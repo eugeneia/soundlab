@@ -3,10 +3,6 @@
 (in-package :soundlab.tempo)
 
 (defun shift (signal offset)
-  "Shift SIGNAL in time by OFFSET. Return amplitude of zero for resulting
-values of time less than zero."
+  "Shift SIGNAL in time by OFFSET."
   (lambda (x)
-    (let ((xo (- x offset)))
-      (if (>= xo 0)
-          (funcall signal xo)
-          0))))
+    (funcall signal (- x offset))))
