@@ -2,42 +2,6 @@
 
 (in-package :soundlab.sampling)
 
-(defstruct sample-buffer%
-  "Buffer struct for imported samples."
-  (rate (error "Must specifify RATE.") :type unsigned-integer)
-  (channels nil :type (array (array real))))
-
-(defun make-sample-buffer (rate n-channels length)
-  "Return SAMPLE-BUFFER% struct for RATE, N-CHANNELS and LENGTH."
-  (let ((channels (make-array n-channels :element-type '(array real))))
-    (loop for i from 0 to (1- n-channels)
-       do (setf (aref channels i)
-                (make-array length :element-type 'real)))
-    (make-sample-buffer% :rate rate :channels channels)))
-
-(defun set-sample (sample-buffer sample channel value)
-  "Set VALUE for SAMPLE / CHANNEL in SAMPLE-BUFFER."
-  (setf (aref (aref (sample-buffer%-channels sample-buffer) channel)
-              sample)
-        value))
-
-(defun make-sample-buffer-signal (channel rate)
-  "Make signal for CHANNEL at RATE."
-  (let ((length (length channel)))
-    (lambda (x)
-      (let ((n (floor (* x rate))))
-        (if (>= n length) 0
-            (aref channel n))))))
-
-(defun sample-buffer-signals (sample-buffer)
-  "Return signals for SAMPLE-BUFFER."
-  (apply #'values
-         (loop for channel across (sample-buffer%-channels sample-buffer)
-            collect (make-sample-buffer-signal
-                     channel
-                     (sample-buffer%-rate sample-buffer)))))
-
-
 (defgeneric wave-signals (source)
   (:documentation "Return signal for WAVE data from SOURCE."))
 

@@ -7,7 +7,8 @@ files and Gnuplot compatible data files.")
   (:use :cl
 	:riff-wave.write
         :riff-wave.read)
-  (:export :sample-function
+  (:export :*sample-rate*
+           :sample-function
 	   :sample-graph
 	   :export-graph
 	   :sample-wave

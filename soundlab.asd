@@ -12,18 +12,18 @@
   :author "Max Rottenkolber <max@mr.gy>"
   :license "GNU Affero General Public License"
   :components ((:file "packages")
-	       (:file "sampling/sample-function"
+	       (:file "sampling/sample"
 		      :depends-on ("packages"))
 	       (:file "sampling/sample-graph"
 		      :depends-on ("packages"
-				   "sampling/sample-function"))
+				   "sampling/sample"))
 	       (:file "sampling/sample-wave"
 		      :depends-on ("packages"
-                                   "sampling/sample-function"))
-               (:file "sampling/wave-signals"
-                      :depends-on ("packages"))
+                                   "sampling/sample"))
                (:file "sampling/cache"
-                      :depends-on ("packages" "sampling/wave-signals"))
+                      :depends-on ("packages" "sampling/sample"))
+               (:file "sampling/wave-signals"
+                      :depends-on ("packages" "sampling/sample"))
 	       (:file "waves/sine"
 		      :depends-on ("packages"))
 	       (:file "waves/binary"

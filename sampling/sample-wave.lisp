@@ -19,7 +19,7 @@ write it to STREAM as a WAVE-file."
 		     (length signals)
 		     (n-samples length frequency)
 		     stream)
-  (for-sample x n length frequency
+  (with-samples (x n length frequency)
     do (loop for signal in signals do
             (write-sample (funcall signal x) sample-size stream))))
 
