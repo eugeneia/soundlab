@@ -26,7 +26,8 @@ RESPONSE."
        sidechain))
 
 (defun duck (response &rest signals)
-  "Add SIGNALS while ducking each other from left to right with RESPONSE."
+  "Add SIGNALS while ducking each other from left to right with
+RESPONSE."
   (reduce (lambda (x y)
             (duck-2 x y response))
           signals))
