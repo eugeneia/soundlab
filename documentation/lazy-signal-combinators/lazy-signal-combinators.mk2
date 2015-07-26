@@ -1,4 +1,5 @@
-_Written by Max Rottenkolber <max@mr.gy>, April 2013._
+_Written by Max Rottenkolber <max@mr.gy>, April 2013. Formatting has been
+updated since._
 
 < Introduction
 
@@ -9,26 +10,26 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
  generate signals resembling—more or less—sine waves which are then
  modulated by being combined with each other in different ways.
 
- {SOUNDLAB}—an experimental implementation of the presented approach—is
+ Soundlab—an experimental implementation of the presented approach—is
  designed to enable the user to explore ways of signal combination. It
  does so by defining an embedded _domain specific language_ which
  provides axioms that generate primitive signals and axioms that combine
  arbitrary signals into new signals. The semantics of the language are
  based on a signal interface agreed on by every component. Furthermore
- {SOUNDLAB} allows the use of _Common Lisp's_ means of abstraction to
+ Soundlab allows the use of _Common Lisp's_ means of abstraction to
  define compound signals and signal combinators. Primitive as well as
  compound parts of the system form a homogeneous group of objects defined
  by their shared interfaces, which grant the system power and flexibility
  of a _Lisp_ system.
 
- There are of course many free software implementations (See for instance
- _Overtone_ [http://overtone.github.io] and _Csound_
- [http://www.csounds.com]) of signal synthesis systems with programming
- language interfaces. {SOUNDLAB} is—when compared to others—much simpler
- and entirely written and embedded in _Common Lisp_.
+ There are of course many free software implementations (see for instance
+ [Overtone](http://overtone.github.io) and
+ [Csound](http://www.csounds.com)) of signal synthesis systems with
+ programming language interfaces. Soundlab is—when compared to
+ others—much simpler and entirely written and embedded in _Common Lisp_.
 
- {SOUNDLAB} is free software licensed under the _GNU AGPL_ and can be
- obtained at [http://mr.gy/software/soundlab/].
+ Soundlab is free software licensed under the _GNU AGPL_ and can be
+ obtained from [GitHub](https://github.com/eugeneia/soundlab).
 
 >
 
@@ -51,13 +52,13 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
  digital sound adapters or plotting applications.
 
  #code Approximate type of a sampling function.#
- (FUNCTION ((FUNCTION (REAL) REAL) REAL)
-           (SEQUENCE REAL))
+ (function ((function (real) real) real)
+           (sequence real))
  #
 
- {SOUNDLAB} derives its signal type from this rationale. It also exports
+ Soundlab derives its signal type from this rationale. It also exports
  two functions which record signals to standard _WAVE_ audio files and
- _Gnuplot_ compatible data files respectively. {SOUNDLAB} also chooses
+ _Gnuplot_ compatible data files respectively. Soundlab also chooses
  arbitrary but sensible units and scales for time and amplitude. Time is
  chosen to be a number in seconds greater than zero and amplitude is
  chosen to be a number ranging from -1 to 1. Results of inputs to the
@@ -76,15 +77,15 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
   aggressive optimizations.
 
   #code Type of a signal.#
-  (FUNCTION (REAL) REAL)
+  (function (real) real)
   #
 
   A crucial type of signal is the sine wave—since in theory, all signals
   are sums of sine waves. _Common Lisp_ provides us with a sine function
-  {SIN} which serves our purpose well. We could pass {#'SIN} to a
+  {sin} which serves our purpose well. We could pass {#'sin} to a
   sampling routine as is, which would produce a very low frequency signal
   below the human hearing threshold. In order to specify other
-  frequencies a constructor {SINE} is defined which accepts a frequency
+  frequencies a constructor {sine} is defined which accepts a frequency
   in Hz and returns the respective sine signal.
 
   #code Constructor for primitive sine signals.#
@@ -104,11 +105,11 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
                    1/2)))
   #
 
-  The {CHORD-2} function demonstrates the important traits of signals as
+  The {chord-2} function demonstrates the important traits of signals as
   functions. A new signal in form of an anonymous function is being
-  compiled whenever we call {CHORD-2}. Because the actual processing of
+  compiled whenever we call {chord-2}. Because the actual processing of
   the arguments is postponed until sampling occurs, operation on signals
-  is cheap. Furthermore calls to {CHORD-2} can be combined to create
+  is cheap. Furthermore calls to {chord-2} can be combined to create
   chords with an arbitrary number of voices.
 
  >
@@ -123,34 +124,34 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
   complex sounds.
 
   #code Type of a signal combinator.#
-  (FUNCTION (&REST (FUNCTION (REAL) REAL))
-            (FUNCTION (REAL) REAL))
+  (function (&rest (function (real) real))
+            (function (real) real))
   #
 
-  While building {SOUNDLAB}, some primitives turned out to be especially
-  useful. {FLATLINE}—a constant signal constructor—serves a simple but
+  While building {soundlab}, some primitives turned out to be especially
+  useful. {flatline}—a constant signal constructor—serves a simple but
   important purpose. It takes a number as its only argument and returns a
   flat signal with a constant amplitude. When passed to a signal
   combinator its purpose is usually to scale combinations of
-  signals. {ADD} is a general signal adder. It takes an arbitrary number
-  of signals and sums them. Likewise, {MULTIPLY} multiplies signals. The
-  {CHORD-2} combinator of the previous section can be defined more
+  signals. {add} is a general signal adder. It takes an arbitrary number
+  of signals and sums them. Likewise, {multiply} multiplies signals. The
+  {chord-2} combinator of the previous section can be defined more
   generally using these primitives.
 
-  #code Implementation of FLATLINE.#
+  #code Implementation of {flatline}.#
   (defun flatline (amplitude)
     (lambda (x)
       (declare (ignore x))
       amplitude))
   #
 
-  #code Generic implementation of CHORD.#
+  #code Generic implementation of {chord}.#
   (defun chord (&rest signals)
     (multiply (apply #'add signals)
               (flatline (/ 1 (length signals)))))
   #
 
-  Note that—due to the normalization performed by {CHORD-2}—the
+  Note that—due to the normalization performed by {chord-2}—the
   equivalent of {(chord a b c)} is
 
   #code #
@@ -163,23 +164,23 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
   (chord-2 (chord-2 a b) c)
   #
 
-  which would produce the chord of {C} and the chord of {A} and {B}
-  instead of the chord of {A}, {B} and {C}.
+  which would produce the chord of {c} and the chord of {a} and {b}
+  instead of the chord of {a}, {b} and {c}.
 
   Furthermore, using signals as arguments to operations where constants
   would suffice whenever possible has proven to be feasible and powerful.
   Whenever a component is being modeled that would be controlled by a
   knob or fader in an analogue synthesizer, then its digital counterpart
   should be controlled by a signal. Take for instance a signal combinator
-  {MIX*} whose purpose is to merge two signals—just like {CHORD}—while
+  {mix*} whose purpose is to merge two signals—just like {chord}—while
   additionally providing a way to control how much each input signal
   amounts to the mixed signal. So what would have been a _Dry/Wet_ knob
-  on an analogue synthesizer becomes a signal in our case. Our {MIX*}
+  on an analogue synthesizer becomes a signal in our case. Our {mix*}
   takes three signals as arguments, two to be mixed and a third to
   control their amounts. For ease of implementation we also introduce
-  {SUBTRACT}—the counterpart to {ADD}.
+  {subtract}—the counterpart to {add}.
 
-  #code Implementation of MIX*.#
+  #code Implementation of {mix*}.#
   (defun mix* (signal-a signal-b ratio-signal)
     (add (multiply signal-a
                    (subtract (flatline 1)
@@ -194,15 +195,15 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
   combinators can be plugged into each other without restriction. As of
   now some care has to be taken to not produce signals exceeding the
   defined boundaries—see _Rendering signals_.  Additionally, some
-  combinators make use of non-audible signals. For instance {MIX*}
-  expects {RATIO-SIGNAL} to return values ranging from zero to one and
-  {MULTIPLY} is used in combination with {FLATLINE} to moderate
-  signals. {SOUNDLAB} fails to address the issue of having multiple
+  combinators make use of non-audible signals. For instance {mix*}
+  expects {ratio-signal} to return values ranging from zero to one and
+  {multiply} is used in combination with {flatline} to moderate
+  signals. Soundlab fails to address the issue of having multiple
   informal subtypes of signals. As of now the user has to refer to the
   documentation of a combinator to find out if it expects certain
-  constraints—as is the case with {MIX*}.  Nevertheless, our few examples
+  constraints—as is the case with {mix*}.  Nevertheless, our few examples
   can already be used to produce complex sounds. The code snippet below
-  works in {SOUNDLAB} as is and produces a rhythmically phasing sound.
+  works in Soundlab as is and produces a rhythmically phasing sound.
 
   #code Possible usage of the presented combinators.#
   (defun a-4 () (sine 440))
@@ -231,14 +232,14 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
 >
 
 
-< The state of _SOUNDLAB_
+< The state of Soundlab
 
- As of the time of this writing {SOUNDLAB} consists of roughly 500 lines
+ As of the time of this writing Soundlab consists of roughly 500 lines
  of source code. It depends on a minimal library for writing _WAVE_ files
  and is written entirely in _Common Lisp_. The source code is fairly well
  documented and frugal.
 
- While being compact {SOUNDLAB} provides basic routines for working with
+ While being compact Soundlab provides basic routines for working with
  western notes and tempo, a few primitive waveforms, _ADSR_ envelopes
  with customizable slopes and the ability to form arbitrary waveforms
  from envelopes, a good handfull of signal combinators and last but not
@@ -254,7 +255,7 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
 
 < Conclusions
 
- {SOUNDLAB}—even in its immature state—presents an opportunity to explore
+ Soundlab—even in its immature state—presents an opportunity to explore
  abstract signal synthesis from scratch for engineers and artist
  alike. Its simplicity encourages hacking and eases understanding. While
  many complex problems surrounding signal synthesis remain unsolved, its
@@ -267,11 +268,11 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
  declarative way, encouraging re-usability and creativity. In comparison
  to other tools in the domain the line between using and extending the
  system is blurry. Where _Csound_ lets the user declaratively configure
- instruments and controls using _XML_, {SOUNDLAB} emphasizes the user to
+ instruments and controls using _XML_, Soundlab emphasizes the user to
  use its built-in primitives and all of _Common Lisp_ to stack layers of
  signal sources and modulators on top of each other.  When compared to
  _Overtone_—a _Clojure_ front-end to the _SuperCollider_ audio
- system—{SOUNDLAB}'s back-end independency and simplicity make it seem
+ system—Soundlab's back-end independency and simplicity make it seem
  more suited for exploration and hacking. Its core concepts are few and
  simple and its codebase is tiny and modular despite some advanced
  features like envelopes, musical scales and tempo, a lowpass filter and
@@ -284,7 +285,7 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
  like signal subtype checking—as mentioned in section 3.2—could be
  implemented using macros.
 
- I personally had tons of fun building and playing with {SOUNDLAB}. I
+ I personally had tons of fun building and playing with Soundlab. I
  encourage everyone interested in computerized music to dive into the
  source code and experiment with the system—it really is that
  simple. Feedback and contributions are welcome!
@@ -294,13 +295,13 @@ _Written by Max Rottenkolber <max@mr.gy>, April 2013._
 
 < Acknowledgments
 
- Thanks to Michael Falkenbach for teaching me a whole lot about analogue
- audio hacking. See [http://soundpiloten.de].
+ Thanks to [Michael Falkenbach](http://soundpiloten.de) for teaching me a
+ whole lot about analogue audio hacking.
 
  Thanks to Vera Schliefer for introducing me to signal theory.
 
  Thanks to Drew Crampsie for providing the _Common Lisp_ community with
- resources regarding the implementation of monadic combinators. See
- [https://github.com/drewc/smug].
+ resources regarding the implementation of monadic combinators in the fom
+ of [Smug](https://github.com/drewc/smug).
 
 >
