@@ -12,7 +12,6 @@ program [sounds like](http://mr.gy/software/soundlab/example.oga).
 
 **Documentation:**
 
-* [API documentation](http://mr.gy/software/soundlab/api.html)
 * [Paper: Lazy Signal Combinators](http://mr.gy/software/soundlab/lazy-signal-combinators.html)
 * [Demo of Soundlab at the European Lisp Symposium 2013](http://www-sop.inria.fr/members/Manuel.Serrano/conferences/els13.html)
 
